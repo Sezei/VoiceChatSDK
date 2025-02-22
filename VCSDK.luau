@@ -2,10 +2,12 @@
 
 -- Voice Chat Simpler Development Kit
 -- Pretty much made by Sezei (0bBinary in Devforums) after a long gruesome process of trying to understand it (i still didn't)
--- Version 1.0 (not that there will ever be other versions unless to fix this ngl)
+-- Version 1.1 (ok there was this one version ig)
 -- Allows the scripters to easily interact with a player's Voice Chat using the official Roblox Audio APIs.
 
 -- hi mom
+
+local VoiceChatService = game:GetService("VoiceChatService");
 
 export type SDK = {
 	-- General Functions
@@ -56,6 +58,12 @@ local SDK:SDK = {
 };
 
 function HandleJoin(Player:Player)
+	local enabled = false;
+	local success = pcall(function()
+		enabled = VoiceChatService:IsVoiceEnabledForUserIdAsync(Player.UserId);
+	end); 
+	if not success or not enabled then return end;
+	
 	task.spawn(function()
 		local Audio:Instance?|AudioDeviceInput? = Player:WaitForChild("AudioDeviceInput");
 		
